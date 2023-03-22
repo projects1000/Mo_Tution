@@ -8,8 +8,6 @@ public class DemocrudApplication {
 
 	public static void main(String[] args) 
 	
-	
-	
 	{
 		SpringApplication.run(DemocrudApplication.class, args);
 	}
