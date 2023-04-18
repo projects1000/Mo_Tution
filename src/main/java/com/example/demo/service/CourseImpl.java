@@ -5,17 +5,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.controller.EmployeeController;
 import com.example.demo.entity.Course;
 import com.example.demo.entity.Employee;
 import com.example.demo.entity.Teacher;
+import com.example.demo.logger.Lgr;
 import com.example.demo.repo.CourseRepo;
 import com.example.demo.repo.TeacherRepo;
 
 @Service
 public class CourseImpl implements CourseService {
+	
+	private Logger logger =Lgr.getLogger(CourseImpl.class);
 	  @Autowired
 	    private CourseRepo courseRepository;
 	  
@@ -26,6 +31,8 @@ public class CourseImpl implements CourseService {
 @Override
 	  public List<Course> getAllCourse()
 		{
+	String methodName="getCourseByID() ";
+	logger.info(methodName + "called");
 			
 			return courseRepository.findAll();
 		}
@@ -42,6 +49,9 @@ public Course  createCourse(Course course)
 @Override
 public Course saveCourse(Course course) {
 	
+	
+	String methodName="saveCourse() ";
+	logger.info(methodName + "called");
 	
 	Course c = new Course();
 	c.setFee(course.getFee());
@@ -64,6 +74,8 @@ public Course saveCourse(Course course) {
 
 @Override
 public Course getCourseByID(long id) {
+	String methodName="saveCourse() ";
+	logger.info(methodName + "called");
 	Course orElseThrow = courseRepository.findById(id).orElseThrow(null);
 	return orElseThrow;
 }

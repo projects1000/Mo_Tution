@@ -24,6 +24,7 @@ import com.example.demo.dto.EmployeeLogin;
 import com.example.demo.entity.Course;
 import com.example.demo.entity.Employee;
 import com.example.demo.entity.Teacher;
+import com.example.demo.logger.Lgr;
 import com.example.demo.repo.CourseRepo;
 import com.example.demo.repo.TeacherRepo;
 import com.example.demo.service.EmployeeService;
@@ -32,34 +33,50 @@ import com.example.demo.service.EmployeeServiceImpl;
 @RestController
 
 public class EmployeeController {
+	
+	
+
+	private Logger logger =Lgr.getLogger(EmployeeController.class);
+	
 	@Autowired
 	private EmployeeService employeeService;
 	
-	private static final Logger LOGGER=LoggerFactory.getLogger(EmployeeController.class);
+	
 	
 	@GetMapping("/hyy")
-	public List<Employee> getAllEmployee() {
-		LOGGER.info("getting All employees");
+	public List<Employee> getAllEmployee() 
+	{
+	
+	
 		return employeeService.getAllEmployee();
 
 	}
 
 	@PostMapping("/add")
-	public Employee postDetails(@RequestBody Employee employee) {
-		LOGGER.info("adding employee");
+	public Employee postDetails(@RequestBody Employee employee) 
+	{
+		String methodName="postDetails() ";
+		logger.info(methodName + "called");
+		
 		return employeeService.saveEmployee(employee);
 	}
 
 	@DeleteMapping("/{id}")
-	public String deleteDetails(@PathVariable("id") long id) {
-		LOGGER.info("Deleting employee by id");
+	public String deleteDetails(@PathVariable("id") long id)
+	{
+		String methodName="deleteDetails() ";
+		logger.info(methodName + "called");
+		
 		employeeService.deleteById(id);
 		return "Data is deleted: " + id;
 	}
 
 	@PutMapping("/update/{id}")
 	public String updateDetails(@PathVariable("id") long id, @RequestBody Employee employee) {
-		LOGGER.info("updating employee");
+		
+		String methodName="updateDetails() ";
+		logger.info(methodName + "called");
+		
 		employeeService.updateById(id, employee);
 		return "Your data is updated...";
 	}
@@ -74,8 +91,8 @@ public class EmployeeController {
 	@PostMapping("/login1")
 	public String loginuser(@RequestBody EmployeeLogin employeeLogin) {
 		
-		
-		LOGGER.info("logging in the employee");
+		String methodName="loginuser() ";
+		logger.info(methodName + "called");
 	
 		Employee loginEmployee = employeeService.loginEmployee(employeeLogin);
 
@@ -88,15 +105,21 @@ public class EmployeeController {
 
 	@PostMapping("/register")
 	public String register(@RequestBody Employee employee) {
-		LOGGER.info("Registering employee");
+		
+		
+		String methodName="register() ";
+		logger.info(methodName + "called");
+	
+		
 		Employee e = employeeService.registerEmployee(employee);
 		return "SUccessfully Registered";
 	}
 
 	@PostMapping("/createUser")
 	public String createEmployee(@ModelAttribute Employee employee, HttpSession session) {
+		String methodName="createEmployee() ";
+		logger.info(methodName + "called");
 		
-		LOGGER.info("creating an saving bsed on email of employee");
 		Employee e = employeeService.checkEmail(employee.getEmail());
 		if (e.getEmail() != null) {
 			session.setAttribute("message", "This Mail id already exist");

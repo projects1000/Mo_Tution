@@ -2,18 +2,22 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
+import com.example.demo.controller.EmployeeController;
 import com.example.demo.dto.EmployeeLogin;
 import com.example.demo.entity.Employee;
+import com.example.demo.logger.Lgr;
 import com.example.demo.repo.EmployeeRepository;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService
 {
+	private Logger logger =Lgr.getLogger(EmployeeServiceImpl.class);
+	
 	@Autowired
 	private EmployeeRepository employeeRepo;
 	
@@ -22,6 +26,8 @@ public class EmployeeServiceImpl implements EmployeeService
 	
 	public Employee createUser(Employee employee)
 	{
+		String methodName="postDetails(@RequestBody Employee employee) ";
+		logger.info(methodName + "called");
 		employee.setPassword(passwordEncode.encode(employee.getPassword()));
 		employee.setRole("ROLE_EMPLOYEE");
 		return employeeRepo.save(employee);
@@ -37,6 +43,8 @@ public class EmployeeServiceImpl implements EmployeeService
 	@Override
 	public List<Employee> getAllEmployee()
 	{
+		String methodName="getAllEmployee()";
+		logger.info(methodName + "called");
 		
 		return employeeRepo.findAll();
 	}
@@ -44,6 +52,9 @@ public class EmployeeServiceImpl implements EmployeeService
 	@Override
 	public Employee updateById(long id, Employee employee)
 	{
+		String methodName="updateDetails() ";
+		logger.info(methodName + "called");
+		
 		Employee employee2= employeeRepo.findById(id).get();
 		employee2.setName(employee.getName());
 		employee2.setAddress(employee.getAddress());
@@ -53,6 +64,9 @@ public class EmployeeServiceImpl implements EmployeeService
 	@Override
 	public void deleteById(long id) 
 	{
+		String methodName="deleteDetails() ";
+		logger.info(methodName + "called");
+		
 		employeeRepo.deleteById(id);	
 	
 	}
@@ -60,6 +74,8 @@ public class EmployeeServiceImpl implements EmployeeService
 	@Override
 	public Employee createEmployee(Employee employee)
 	{
+		String methodName="createEmployee() ";
+		logger.info(methodName + "called");
 		
 		return employeeRepo.save(employee);
 	}
@@ -72,11 +88,16 @@ public class EmployeeServiceImpl implements EmployeeService
 
 	@Override
 	public Employee registerEmployee(Employee employee) {
+		String methodName="register() ";
+		logger.info(methodName + "called");
 		return employeeRepo.save(employee);
 	}
 
 	@Override
 	public Employee loginEmployee(EmployeeLogin employeeLogin) {
+		String methodName="loginuser() ";
+		logger.info(methodName + "called");
+	
 		Employee email = employeeRepo.findByEmail(employeeLogin.getEmail());
 		if (email !=null)
 		{
